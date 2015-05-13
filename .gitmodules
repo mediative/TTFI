@@ -1,0 +1,3 @@
+[submodule "ttfi-core/src/main/scala/reasonably-priced"]
+	path = ttfi-core/src/main/scala/reasonably-priced
+	url = git@gist.github.com:/a8fab38e473fafa0921d.git
