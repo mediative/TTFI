@@ -47,9 +47,12 @@ class IsomorphicSpecs extends Specification {
       ti3 === Add(ti1, Neg(Neg(ti1)))
   }
 
+  def tif1[repr[_]: ExpSym]: repr[Integer] = Isomorphic[repr](ti1)(identity)
+  def tif3[repr[_]: ExpSym]: repr[Integer] = Isomorphic[repr](ti3)(identity)
+
   def e2 = {
-    view(tf1[Exp.Debug]) === initialView(ti1) &&
-      view(tf3[Exp.Debug]) === initialView(ti3)
+    view(tif1[Exp.Debug]) === initialView(ti1) &&
+      view(tif3[Exp.Debug]) === initialView(ti3)
   }
 
   def e3 = view(tf3[Exp.Debug]) === "((8 + (-(1 + 2))) + (-(-(8 + (-(1 + 2))))))"
