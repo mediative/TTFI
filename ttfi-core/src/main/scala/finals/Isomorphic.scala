@@ -5,11 +5,21 @@ import initial.FP.{ Exp => Initial, Lit, Neg, Add }
 object Isomorphic {
   import ExpSym.ExpSym
 
-  def apply[repr[_]](e: Initial[Integer])(f: Initial[Integer] => Initial[Integer])(implicit s: ExpSym[repr]): repr[Integer] =
-    f(e)
+  /**
+   * map final forms to initial representations. final forms are flexible and
+   * are generic in representation domains. the initial representation is merely
+   * another representation domain being thrown into the mix. the signature of
+   * 'initialize' below ensures that the result of calling initialize is in the
+   * initial representation; the flexibility of final representation ensures
+   * that we can call initialize on final forms provided we have the implicit
+   * for 'ExpSym[Initial]' (i.e., 'ExpSym_Initial') in scope.
+   */
+  def initialize: Initial[Integer] => Initial[Integer] = identity
 
-  def apply[repr[_]](e: ExpSym[Initial] => Initial[Integer])(f: Initial[Integer] => Initial[Integer])(implicit s: ExpSym[repr]): repr[Integer] =
-    Exp_Final(f(e(ExpSym_Initial)))(s)
+  /**
+   * map initial forms into final forms. this simply invokes 'Exp_Final' def
+   */
+  def finalize[repr[_]: ExpSym](x: Initial[Integer]): repr[Integer] = Exp_Final[repr](x)
 
   implicit object ExpSym_Initial extends ExpSym[Initial] {
     def lit = (x: Integer) => Lit(x)
